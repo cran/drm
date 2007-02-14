@@ -21,8 +21,7 @@ Time indicator.
 \seealso{\code{\link{drm}}, \code{\link{depratio}}, \code{\link{cluster}}}
 
 \examples{
-data(wheeze)
-drm(wheeze~cluster(id)+Time(age),data=wheeze,dep="M", print=0)
+formula(wheeze~cluster(id)+Time(age))
 }
 
 \keyword{misc}%-- one or more ...

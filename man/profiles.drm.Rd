@@ -30,27 +30,24 @@ profiles.drm(n.categories, n.repetitions, structure = "exchangeable")
 }
 \seealso{\code{\link{drm}}}
 \examples{
-## use madras-data
-data(madras)
+## use marijuana-data
+data(marijuana)
 
-## create matrix for profiles (takes a couple of minutes):
-W.madras <- profiles.drm(2, 12, "M")
+## create matrix for profiles:
+W.mari <- profiles.drm(3, 5, "M")
 
-## create four-level covariate, combining age and sex:
-madras$age.sex <- factor(paste(madras$age,madras$sex,sep="."))
-
-## fit the model using W.madras (takes less than a couple of minutes):
-fit <- drm(symptom~age+sex+month+month:age+month:sex+cluster(id)+Time(month),
-           data=madras, Ncond=FALSE, save.profiles=FALSE, pmatrix="W.madras",
-           dep=list("NM",nu1~nu1:age.sex,
-                    tau~function(a0=0,a1=0) 1+a0*exp(a1*c(0:10))), print=1)
+## fit the model using W.mari:
+fit <- drm(y~age+cluster(id)+Time(age), data=marijuana,
+           subset=sex=="male",pmatrix="W.mari", save.profiles=FALSE,
+           dep=list("M",tau12~function(a=1,b=0) a+b*c(0:3),
+                    tau21~function(a=1,b=0) a+b*c(0:3)),print=0)
 
 ## a speedy way of saving the profile probabilities to the object:
-fit <- drm(symptom~age+sex+month+month:age+month:sex+cluster(id)+Time(month),
-           data=madras, Ncond=FALSE, save.profiles=TRUE, pmatrix="W.madras",
-           dep=list("NM",nu1~nu1:age.sex,
-                    tau~function(a0=0,a1=0) 1+a0*exp(a1*c(0:10))),
-           print=0, start=coef(fit))
+fit <- drm(y~age+cluster(id)+Time(age), data=marijuana,
+           subset=sex=="male",pmatrix="W.mari", save.profiles=TRUE,
+           dep=list("M",tau12~function(a=1,b=0) a+b*c(0:3),
+                    tau21~function(a=1,b=0) a+b*c(0:3)),print=0,
+           start=coef(fit))
 
 }
 \keyword{array}% at least one, from doc/KEYWORDS

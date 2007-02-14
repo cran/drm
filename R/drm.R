@@ -418,7 +418,7 @@
         else (assp <- assp[equal])
       }
       if (is.na(match("nu1", names(estimate))) | Lclass > 2){
-        cat("Note: conditional probabilities not calculated; See ?getass.drm for an example") 
+        cat("Note: conditional probabilities not calculated; See ?getass.drm for an example\n") 
         mucond <- NULL
       }
       else {

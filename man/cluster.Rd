@@ -24,7 +24,6 @@ cluster indicator.
 \seealso{\code{\link{drm}}, \code{\link{depratio}}, \code{\link{Time}}}
 
 \examples{
-data(wheeze)
-drm(wheeze~cluster(id),data=wheeze,print=0)
+formula(wheeze~cluster(id))
 }
 \keyword{misc}

@@ -79,6 +79,7 @@ parameters. For more details, see the reference below.
 ### Example of functional forms:
 ## non-stationary second order Markov structure
 ## initial values of the dependence ratios are set to 1.
+\dontrun{
 data(wheeze)
 assoc <- list("M2",
               tau12 ~ function(a78=1, a89=1, a910=1)c(a78, a89, a910),
@@ -87,7 +88,6 @@ assoc <- list("M2",
 
 fit1 <- drm(wheeze~I(age>9)+smoking+cluster(id)+Time(age),
             data=wheeze, dep=assoc, print=0)
-
 ### Example of other parameter restrictions:
 ## fixing parameters to a known value: ~tau12==1, ~tau21==1
 ## setting parameters to equal: ~tau11==tau22
@@ -103,22 +103,19 @@ assoc <- list("M", ~tau11==tau12, ~tau11==tau21, ~tau11==tau22)
 
 fit3 <- drm(y~age+cluster(id)+Time(age), data=marijuana,
             subset=sex=="female", dep=assoc, print=0)
-
+}
 ### Example of covariates for the association parameters:
-## allow the latent class prevalence and the corresp. conditional
-## probabilities vary by sex. Note: covariate needs to be a factor.
+## allow the probabilities within the latent class
+## vary by sex. Note: covariate needs to be a factor.
+data(obese)
+assoc <- list("L", kappa0 ~ kappa0:factor(sex))
 
-assoc <- list("L",
-              nu1 ~ nu1:factor(sex),
-              kappa0 ~ kappa0:factor(sex),
-              kappa1 ~ kappa1:factor(sex))
-
-fit4 <- drm(y~age+cluster(id)+Time(age), data=marijuana,
+fit4 <- drm(obese~age+cluster(id)+Time(age), data=obese,
             dep=assoc, print=0)
 
 ### Example how to derive conditional probabilities from marginals
 ## Fit a model with three latent classes:
-
+data(wheeze)
 latent3 <- drm(wheeze~I(age>9)+smoking+cluster(id),data=wheeze,
                dep="L",Lclass=3, print=0)
 

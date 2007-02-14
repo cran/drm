@@ -40,14 +40,14 @@ print.level=2, iterlim=200, ...)
   \item{na.action}{a function which indicates what should happen when
        the  data  contain  NAs.  The  default is \code{na.include} after
        which the analysis assumes missing data mechanism at random (MAR) if
-       \code{dropout=FALSE}, and not at random if \code{dropout=TRUE}.
-       See \code{dropout} below.}
+       \code{dropout=FALSE}, and not at random if
+       \code{dropout = TRUE}. See \code{dropout} below.}
   \item{start}{an optional vector of starting values for the
        parameters. If not specified by the user, the starting values
        are estimated from \code{glm}-procedure assuming independence}
  \item{link}{this can be used to specify alternative link functions
        for nominal and ordinal responses. By default "cum", after which
-       the link is specified through \code{family=binomial(link=?)} for the
+       the link is specified through \code{family = binomial(link=?)} for the
        cumulative probabilities. Alternative links include adjacent
        category logit "acl" and baseline category logit "bcl" (baseline
        category being the last category). For "bcl", the regression
@@ -87,7 +87,7 @@ print.level=2, iterlim=200, ...)
     this argument allows to impose a selection model (see [8] for
     details) on top of regression and association model to investigate the sensitivity of
     the results due to missingness. The model formula notation is:
-    \code{logit(hz(drop.cur))=(Intercept)d+response.cur+response.prev} ,
+    \code{logit(hz(drop.cur)) = (Intercept)d+response.cur+response.prev} ,
     where \code{response.cur} denotes the effect of current, possibly missing
     response value and \code{response.prev} denotes the effect of previous
     response value. MCAR, MAR and MNAR-models can be
@@ -201,10 +201,6 @@ print.level=2, iterlim=200, ...)
        data analysis. \emph{Applied Statistics} 1994;  43: 49-94.}
 
 \author{Jukka Jokinen, \email{jukka.jokinen@helsinki.fi}}
-%\note{After numerical optimization the \code{nlm}-procedure may warn
-%      about \code{NA}'s replaced by maximum positive value. This is due to
-%      negative path probabilities during optimization and don't have any
-%       affect to the outcome.}
 \section{WARNING}{The maximum likelihood estimates may sometimes lead
   to negative fitted probabilities. In this case, both generic
   print-methods warn about this. In this case, the model is considered
@@ -215,13 +211,12 @@ print.level=2, iterlim=200, ...)
   \code{\link{profiles.drm}}, \code{\link{depratio}}}
 
 \examples{
-###########################################
+######################################################
 ## Examples for binary responses
 ###########################################
 ## Wheeze among Steubenville (see [3]):
 ## Latent Beta-distributed propensity
 data(wheeze)
-
 fit1 <- drm(wheeze~I(age>9)+smoking+cluster(id),data=wheeze,dep="B", print=0)
 
 ## Obesity among Muscatine children (see [2]):
@@ -230,6 +225,7 @@ data(obese)
 fit2 <- drm(obese~age+cluster(id)+Time(year), subset=sex=="female",
             dep="M2",data=obese)
 
+\dontrun{
 ## Muscatine children continued (see [3]):
 ## LM for boys and girls separately
 fit3 <- drm(obese~age+cluster(id)+Time(age), subset=sex=="male",
@@ -237,7 +233,7 @@ fit3 <- drm(obese~age+cluster(id)+Time(age), subset=sex=="male",
 
 fit4 <- drm(obese~age+cluster(id)+Time(age), subset=sex=="female",
             dep="LM",data=obese)
-
+}
 ############################################
 ## Examples for ordinal responses
 ############################################
@@ -261,18 +257,19 @@ fit6 <- drm(y~age+cluster(id)+Time(age), data=marijuana,
 plot(depratio(y~cluster(id)+Time(age), data=marijuana,
      subset=sex=="male"))
 
+## fit the model in [6]:
 fit7 <- drm(y~age+cluster(id)+Time(age), data=marijuana,
             subset=sex=="male", dep=list("M", 
             tau12~function(a=1,b=0) a+b*c(0:3),
             tau21~function(a=1,b=0) a+b*c(0:3)))
 
+\dontrun{
 ##############################################
 ## Covariates for the association (see [7]):
 ##############################################
 data(madras)
 
 ## plot empirical 2nd order dependence ratios with bootstrap CI's
-## (requires packages gdata, gtools, gplots)
 tau.madras <- depratio(symptom~cluster(id)+Time(month), data=madras,
                        boot.ci = TRUE, n.boot = 1000)
 plot(tau.madras, log="y", ylim=c(1,40), plot.ci=TRUE)
@@ -283,7 +280,7 @@ W.madras <- profiles.drm(n.categories=2, n.repetitions=12, "M")
 ## create four-level covariate, combining age and sex:
 madras$age.sex <- factor(paste(madras$age,madras$sex,sep="."))
 
-## fit the model in [6]:
+## fit the model in [7], Section 4:
 fit8 <- drm(symptom~age+sex+month+month:age+month:sex+cluster(id)+Time(month),
             data=madras, Ncond=FALSE, save.profiles=FALSE, pmatrix="W.madras",
             dep=list("NM",nu~nu:age.sex,
@@ -309,10 +306,10 @@ mcar <- drm(symptom~age+sex+month+month:age+month:sex+cluster(id)+Time(month),
 ## A dropout model assuming MAR; including sex as a covariate:
 
 mar <- drm(symptom~age+sex+month+month:age+month:sex+cluster(id)+Time(month),
-            data=madras, save.profiles=FALSE, pmatrix="W.madras",
-            dep=list("NM", tau~function(a0=0,a1=0) 1+a0*exp(a1*c(0:10)),
-                     ~symptom.cur==0), dropout=TRUE, drop.x=sex,
-            start=c(coef(mcar),0,0))
+           data=madras, save.profiles=FALSE, pmatrix="W.madras",
+           dep=list("NM", tau~function(a0=0,a1=0) 1+a0*exp(a1*c(0:10)),
+                    ~symptom.cur==0), dropout=TRUE, drop.x=sex,
+           start=c(coef(mcar),0,0))
 
 ## A dropout model assuming MNAR and sex as a covariate:
 
@@ -323,10 +320,9 @@ mnar <- drm(symptom~age+sex+month+month:age+month:sex+cluster(id)+Time(month),
 
 ## print out coefficients and std.errors:
 coef(summary(mnar))
-
+}
 ## std.error of `symptom.cur' all over the place; too few dropouts
 ## for a comprehensive evaluation of the dropout mechanism
-
 }
 \keyword{models}
 
