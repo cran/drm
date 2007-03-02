@@ -155,8 +155,10 @@
       }
     }
     else{
-      p2 <- c(nu1 = 0.99, rep(0.5, nclass - 1))      
-      names(p2) <- c("nu1", paste("kappa", 0:(nclass - 2), sep = ""))
+      p2 <- c(nu1 = 0.99, rep(0.5, nclass - 1))
+      if(nclass==2)
+        names(p2) <- c("nu1", "kappa")
+      else(names(p2) <- c("nu1", paste("kappa", 1:(nclass - 1), sep = "")))
     }
     parms <- c(parms, p2)
   }

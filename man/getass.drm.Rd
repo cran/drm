@@ -20,22 +20,34 @@ parameters. For more details, see the reference below.
   than the smallest category. Covariates can be specified. See examples
   below.}
 
-\item{\code{nu1, nu2, ..., nuk}}{For "L"-structure: the proportion in the population
-  in the latent class 1, 2, ..., k. The proportion in the latent class 0
-  can be obtained by calculating 1-\code{nu1}-\code{nu2}-... Note that
+\item{\code{nu1, nu2, ..., nuk}}{For "L"-structure: the proportion in
+  the population in the latent class 1, 2, ..., k. The proportion in the
+  latent class 0 can be obtained by calculating
+  1-\code{nu1}-\code{nu2}-... Note that 
   for binary responses,  the number of latent classes can be specified
   with an argument \code{Lclass} (Default 2). Covariates can be
   specified. See examples below.}
 
-\item{\code{kappa0, kappa1,...,kappak-1} (binary response)}{For "L"-structure:
-  the ratio of success probabilities in the latent class 0, 1, ..., k-1
-  compared to the success probability in the latent class k. Covariates
-  can be specified. See examples below.}
+\item{\code{kappa} (binary response)}{For "L"-structure with
+  \code{Lclass=2} (default), the success probability in the latent class
+  0 divided by the success probability in the latent class 1,
+  i.e. kappa = pr(Y=1|L=0)/pr(Y=1|L=1). Covariates can be specified;
+  examples below.} 
 
-\item{\code{kappa0, kappa1,...,kappak-1} (multicategorical response)}{For
-  "L"-structure with two latent classes: the ratio of category
-  probabilities in categories 0, 1,..., k-1 in the latent class 0
-  compared to the corresponding probabilities in the latent class 1.}
+\item{\code{kappa0, kappa1,...,kappak-1} (binary response)}{For
+  "L"-structure with \code{Lclass=k+1}:
+  the success probabilities in the latent class 0, 1, ..., k-1
+  divided by the success probability in the latent class k. For example,
+  kappa0 = pr(Y=1|L=0)/pr(Y=1|L=k). Covariates can be specified. See
+  examples below.} 
+
+\item{\code{kappa1, kappa2,...,kappak-1} (multicategorical response with k
+  levels)}{For "L"-structure with two latent classes
+  (i.e. \code{Lclass=2}): the category probabilities in categories 1,
+  2,..., k-1 in the latent class 0 divided by the corresponding
+  probabilities in the latent class 1. For example, kappa2 =
+  pr(Y=2|L=0)/pr(Y=2|L=1). The smallest response value is regarded as
+  the baseline, denoted by 0} 
 
 \item{\code{xi1, xi0} (binary response)}{For "B"-structure: the shape
   parameters of the Beta-distribution (sometimes also noted as xi1=p and
@@ -108,7 +120,7 @@ fit3 <- drm(y~age+cluster(id)+Time(age), data=marijuana,
 ## allow the probabilities within the latent class
 ## vary by sex. Note: covariate needs to be a factor.
 data(obese)
-assoc <- list("L", kappa0 ~ kappa0:factor(sex))
+assoc <- list("L", kappa ~ kappa:factor(sex))
 
 fit4 <- drm(obese~age+cluster(id)+Time(age), data=obese,
             dep=assoc, print=0)

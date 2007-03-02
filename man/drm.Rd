@@ -249,8 +249,8 @@ fit5 <- drm(y~critic+cluster(movie), data=movie, dep="D", link="bcl")
 data(marijuana)
 
 fit6 <- drm(y~age+cluster(id)+Time(age), data=marijuana,
-            subset=sex=="female", dep=list("NLM", ~kappa0==1,
-            ~kappa1==0, ~tau12==1, ~tau21==1, ~tau11==tau22))
+            subset=sex=="female", dep=list("NLM", ~kappa1==1,
+            ~kappa2==0, ~tau12==1, ~tau21==1, ~tau11==tau22))
 
 ## Parameter restrictions with functions using M-structure for the boys.
 ## Plot the second order dependence ratios:
