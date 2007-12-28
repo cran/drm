@@ -43,7 +43,7 @@ print.level=2, iterlim=200, ...)
        \code{dropout=FALSE}, and not at random if
        \code{dropout = TRUE}. See \code{dropout} below.}
   \item{start}{an optional vector of starting values for the
-       parameters. If not specified by the user, the starting values
+       parameters. By default, the starting values
        are estimated from \code{glm}-procedure assuming independence}
  \item{link}{this can be used to specify alternative link functions
        for nominal and ordinal responses. By default "cum", after which
@@ -102,7 +102,7 @@ print.level=2, iterlim=200, ...)
     values of all possible profiles is saved. If \code{FALSE}, only the
     indicator vector (-1 for a negative, 1 for a positive profile) over all
     units will be saved. If the cluster size is large, using
-    \code{save.profiles=TRUE} may result to a very large object.}
+    \code{save.profiles=TRUE} may result in a very large object.}
   \item{pmatrix}{a character object specifying the name of the matrix
     for all possible profiles, created using
     \code{\link{profiles.drm}}. If the cluster size is large,
@@ -148,15 +148,19 @@ print.level=2, iterlim=200, ...)
     \item{fitted.conditionals}{in case of "L"-structure, the fitted
       values for the conditional univariate means, otherwise NULL. Not
       yet implemented for \code{Lclass}>2; see also
-      \code{\link{getass.drm}}} 
+      \code{\link{getass.drm}}.} 
 
     \item{fitted.profiles}{the fitted response profile probabilities
       within each cluster, calculated by using the maximum likelihood
-      estimates from the model. See also \code{save.profiles} above}
+      estimates from the model. See also \code{save.profiles}
+      above. Note that within each cluster, the order of the
+      responses is by Time for Markov structures, and for
+      exchangeable structures with missing values, by response
+      value, with missing values (NA) last.}
 
     \item{deviance}{minus twice the maximised log-likelihood.}
 
-     \item{aic}{Akaike's Information Criterion, minus twice the maximised
+     \item{aic}{Akaike's Information Criterion: minus twice the maximised
        log-likelihood plus twice the number of coefficients. Not
        available if the likelihood is weighted with the dropout
        probabilities.} 

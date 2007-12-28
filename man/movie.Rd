@@ -27,7 +27,6 @@
   Multinomial logit random effects models. \emph{Statistical Modelling},
   1: 81-102
 }
-}
 \references{
 Jokinen J, McDonald JW, Smith PWF. Meaningful regression and
 association models for clustered ordinal data.

@@ -1,6 +1,6 @@
 Package: drm
-Version: 0.5-5
-Date: 2007/03/02
+Version: 0.5-6
+Date: 2007/12/28
 Title: Regression and association models for repeated categorical data
 Author: Jukka Jokinen <jukka.jokinen@helsinki.fi>
 Maintainer: Jukka Jokinen <jukka.jokinen@helsinki.fi>
@@ -8,4 +8,4 @@ Description: Likelihood-based marginal regression and association modelling for 
 Depends: R(>= 1.0)
 License: GPL version 2 or later
 URL: http://www.helsinki.fi/~jtjokine/drm
-Packaged: Fri Mar  2 13:06:33 2007; jukkaj
+Packaged: Fri Dec 28 16:23:25 2007; jukkaj

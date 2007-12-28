@@ -50,7 +50,20 @@
   ord <- attr(Terms, "order")[c(tempc$terms, tempt$terms)]
   if (any(ord > 1)) 
     stop("cluster() or Time() can not be used in an interaction")
-  ord <- c(cluster, Time, attr(Terms, "response"))
+  if (length(grep("M", dep)) > 0){
+    ord <- c(cluster, Time)
+    note <- paste("Note:  ordering of the responses within each cluster is by Time")
+  }
+  else{
+    if(any(is.na(m))){
+      ord <- c(cluster, attr(Terms, "response"))
+      note <- paste("Note:  ordering of the responses within each cluster is by response value (with NA last)")
+    }
+    else{
+      ord <- cluster
+      note <- NULL
+    }
+  }
   mord <- eval(parse(text = paste("order(", paste("m[,", ord, 
                        "]", collapse = ","), ")")))
   m <- m[mord, ]
@@ -95,33 +108,40 @@
   mis <- apply(cbind(y, X), 1, function(i) any(is.na(i)))
   x <- X[!mis, drop = FALSE, ]
   y1 <- ifelse(as.numeric(as.factor(y)) > 1, 1, 0)[!mis]
-  parm1 <- glm.fit(x, y1, family = family)$coefficients
-  if (nclass > 2) {
-    theta <- matrix(0, nrow = length(parm1), ncol = nclass - 
-                    2)
-    for (i in 2:(nclass - 1)) {
-      y1 <- ifelse(as.numeric(as.factor(y)) > i, 1, 0)[!mis]
-      theta[, i - 1] <- glm.fit(x, y1, family = family)$coefficients
+  if(is.null(start)){
+    parm1 <- glm.fit(x, y1, family = family)$coefficients
+    if (nclass > 2) {
+      theta <- matrix(0, nrow = length(parm1), ncol = nclass - 2)
+      for (i in 2:(nclass - 1)) {
+        y1 <- ifelse(as.numeric(as.factor(y)) > i, 1, 0)[!mis]
+        theta[, i - 1] <- glm.fit(x, y1, family = family)$coefficients
+      }
+      parms <- c(as.vector(-parm1[1]), (-theta[1, ]), parm1[-1])
+      names(parms)[1:(nclass - 1)] <- paste("(Intercept)", 
+                                            1:(nclass - 1), sep = "")
+      if (link == "bcl") {
+        parms[1:(nclass - 1)] <- log(table(y)[nclass]) - 
+          log(table(y)[-nclass])
+        bclreg <- as.vector(-theta[-1, ])
+        names(bclreg) <- rep(names(parm1)[-1], nclass - 2)
+        parms <- c(-parms, bclreg)
+        names(parms)[-(1:(nclass - 1))] <-
+          paste(names(parms)[-(1:(nclass -  1))],
+                rep(1:(nclass - 1), rep(nrow(theta) - 1, nclass - 1)), sep = "")
+      }
+      if (link == "acl") {
+        parms[1:(nclass - 1)] <- log(table(y)[-nclass]) - 
+          log(table(y)[-1])
+      }
     }
-    parms <- c(as.vector(-parm1[1]), (-theta[1, ]), parm1[-1])
-    names(parms)[1:(nclass - 1)] <- paste("(Intercept)", 
-                                          1:(nclass - 1), sep = "")
-    if (link == "bcl") {
-      parms[1:(nclass - 1)] <- log(table(y)[nclass]) - 
-        log(table(y)[-nclass])
-      bclreg <- as.vector(-theta[-1, ])
-      names(bclreg) <- rep(names(parm1)[-1], nclass - 2)
-      parms <- c(-parms, bclreg)
-      names(parms)[-(1:(nclass - 1))] <-
-        paste(names(parms)[-(1:(nclass -  1))],
-              rep(1:(nclass - 1), rep(nrow(theta) - 1, nclass - 1)), sep = "")
-    }
-    if (link == "acl") {
-      parms[1:(nclass - 1)] <- log(table(y)[-nclass]) - 
-        log(table(y)[-1])
-    }
+    else (parms <- parm1)
   }
-  else (parms <- parm1)
+  else{
+    parms <- rep(0,ncol(x)+(nclass-2))
+    names(parms)[1:(nclass - 1)] <- paste("(Intercept)", 
+                                          if(nclass>2) 1:(nclass - 1) else(""), sep = "")
+    names(parms)[nclass:(ncol(x)+nclass-2)] <- dimnames(x)[[2]][-1]
+   }
   npar <- length(parms)
   if (length(grep("N", dep)) > 0) 
     parms <- c(parms, nu = 1)
@@ -359,6 +379,8 @@
         v <- expand.grid(rep(list(1:nclass), nrep))
       dimnames(prof) <- list(apply(v, 1, paste, collapse = ""), 
                              unique(marg.names[, 1]))
+      if(!is.null(note))
+        attributes(prof)$note <- note
     }
     if (nclass == 2) 
       mu <- matrix(family$linkinv(offset.org + X.org %*% 
