@@ -20,7 +20,7 @@ The function's only action is semantic, to mark a variable as the
 cluster indicator.
 }
 \value{x}
-}
+
 \seealso{\code{\link{drm}}, \code{\link{depratio}}, \code{\link{Time}}}
 
 \examples{
