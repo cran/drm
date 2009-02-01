@@ -15,54 +15,47 @@ functional forms on the association parameters. The following list
 describes the notation and concise interpretation of the association
 parameters. For more details, see the reference below.
 
+\itemize{
 \item{\code{nu}}{For "N"-structure: the proportion of susceptibles in the
   population, i.e. proportion of units that can have a value greater
   than the smallest category. Covariates can be specified. See examples
   below.}
-
 \item{\code{nu1, nu2, ..., nuk}}{For "L"-structure: the proportion in
   the population in the latent class 1, 2, ..., k. The proportion in the
   latent class 0 can be obtained by calculating
-  1-\code{nu1}-\code{nu2}-... Note that 
+  \eqn{1-\code{nu1}-\code{nu2}-...} Note that 
   for binary responses,  the number of latent classes can be specified
   with an argument \code{Lclass} (Default 2). Covariates can be
   specified. See examples below.}
-
 \item{\code{kappa} (binary response)}{For "L"-structure with
   \code{Lclass=2} (default), the success probability in the latent class
   0 divided by the success probability in the latent class 1,
-  i.e. kappa = pr(Y=1|L=0)/pr(Y=1|L=1). Covariates can be specified;
+  i.e. \eqn{kappa = pr(Y=1|L=0)/pr(Y=1|L=1)}. Covariates can be specified;
   examples below.} 
-
 \item{\code{kappa0, kappa1,...,kappak-1} (binary response)}{For
   "L"-structure with \code{Lclass=k+1}:
   the success probabilities in the latent class 0, 1, ..., k-1
   divided by the success probability in the latent class k. For example,
-  kappa0 = pr(Y=1|L=0)/pr(Y=1|L=k). Covariates can be specified. See
+  \eqn{kappa0 = pr(Y=1|L=0)/pr(Y=1|L=k)}. Covariates can be specified. See
   examples below.} 
-
 \item{\code{kappa1, kappa2,...,kappak-1} (multicategorical response with k
   levels)}{For "L"-structure with two latent classes
   (i.e. \code{Lclass=2}): the category probabilities in categories 1,
   2,..., k-1 in the latent class 0 divided by the corresponding
-  probabilities in the latent class 1. For example, kappa2 =
-  pr(Y=2|L=0)/pr(Y=2|L=1). The smallest response value is regarded as
+  probabilities in the latent class 1. For example, \eqn{kappa2 =
+  pr(Y=2|L=0)/pr(Y=2|L=1)}. The smallest response value is regarded as
   the baseline, denoted by 0} 
-
 \item{\code{xi1, xi0} (binary response)}{For "B"-structure: the shape
-  parameters of the Beta-distribution (sometimes also noted as xi1=p and
-  xi0=q). Covariates can be specified. See examples below.}
-
+  parameters of the Beta-distribution (sometimes also noted as \code{xi1=p} and
+  \code{xi0=q}). Covariates can be specified. See examples below.}
 \item{\code{xi0, xi1, ..., xik} (multicategorical response)}{For "D"-structure:
   the shape parameters of the Dirichlet distribution}
-
 \item{\code{tau} (binary responses)}{For "M"-structure: adjacent second order
   dependence ratio. If the number of repeated measurements is greater
   than two, the adjacent \code{tau}'s are assumed to be equal
   (i.e. stationarity of the dependence ratios). In order to specify
   equalities or functional forms (i.e. non-stationary overlapping
   dependence ratios), see examples below.}
-
 \item{\code{tau12, tau13, tau123} (binary responses)}{For "M2"-structure:
   adjacent second order dependence ratio (\code{tau12}), adjacent third
   order dependence ratio (\code{tau123}) and the second order dependence
@@ -71,13 +64,13 @@ parameters. For more details, see the reference below.
   assumed to be equal (i.e. stationarity of the dependence
   ratios). Equalities and functional forms can be specified. See
   examples below.}
-
 \item{\code{tau11, tau12, ..., tau21, tau22, ...,taukk} (multicategorical
   responses)}{For "M"-structure: adjacent second order
-  dependence ratios for categories 1, 2, ..., k, where the smallest
+  dependence ratios for categories \eqn{1, 2, ..., k}, where the smallest
   response value is regarded as the baseline, denoted by 0. Equalities
   and functional forms can be specified as for the binary "M"-structures
   above. See examples below.} 
+}
 }
 
 \references{

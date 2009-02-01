@@ -72,7 +72,7 @@ print.level=2, iterlim=200, ...)
        documentation of the support function \code{\link{getass.drm}}.}
   \item{Ncond}{logical argument defining whether the regression model is marginal or
     conditional when the association is "N". The default is \code{TRUE}, 
-    i.e. the regression estimation is conditional on {N=1}. If
+    i.e. the regression estimation is conditional on \eqn{{N=1}}. If
     covariates are used for the "N"-association, it is advisable to set
     \code{Ncond=FALSE}, since otherwise the interpretation of the
     regression parameters is less clear.}
@@ -142,37 +142,38 @@ print.level=2, iterlim=200, ...)
 	estimates.}
 
       \item{fitted.marginals}{the fitted values for the univariate
-      means, obtained by transforming the linear predictors by the
-      inverse of the link function.}
+	means, obtained by transforming the linear predictors by the
+	inverse of the link function.}
 
-    \item{fitted.conditionals}{in case of "L"-structure, the fitted
-      values for the conditional univariate means, otherwise NULL. Not
-      yet implemented for \code{Lclass}>2; see also
-      \code{\link{getass.drm}}.} 
+      \item{fitted.conditionals}{in case of "L"-structure, the fitted
+	values for the conditional univariate means, otherwise NULL. Not
+	yet implemented for \code{Lclass}>2; see also
+	\code{\link{getass.drm}}.} 
 
-    \item{fitted.profiles}{the fitted response profile probabilities
-      within each cluster, calculated by using the maximum likelihood
-      estimates from the model. See also \code{save.profiles}
-      above. Note that within each cluster, the order of the
-      responses is by Time for Markov structures, and for
-      exchangeable structures with missing values, by response
-      value, with missing values (NA) last.}
+      \item{fitted.profiles}{the fitted response profile probabilities
+	within each cluster, calculated by using the maximum likelihood
+	estimates from the model. See also \code{save.profiles}
+	above. Note that within each cluster, the order of the
+	responses is by Time for Markov structures, and for
+	exchangeable structures with missing values, by response
+	value, with missing values (NA) last.}
+      
+      \item{deviance}{minus twice the maximised log-likelihood.}
+      
+      \item{aic}{An Information Criterion: minus twice the maximised
+	log-likelihood plus twice the number of coefficients. Not
+	available if the likelihood is weighted with the dropout
+	probabilities.} 
+      
+      \item{niter}{the number of iterations that \code{nlm} used.}
+      
+      \item{code}{convergence code from \code{nlm}. See \code{nlm} for details.}
+      
+      \item{call}{the matched call.}
 
-    \item{deviance}{minus twice the maximised log-likelihood.}
-
-     \item{aic}{Akaike's Information Criterion: minus twice the maximised
-       log-likelihood plus twice the number of coefficients. Not
-       available if the likelihood is weighted with the dropout
-       probabilities.} 
-
-     \item{niter}{the number of iterations that \code{nlm} used.}
-
-     \item{code}{convergence code from \code{nlm}. See \code{nlm} for details.}
-
-     \item{call}{the matched call.}
-
-     \item{terms}{the `terms' object used.}
-}
+      \item{terms}{the `terms' object used.}
+    }
+   
 \references{1. Ekholm A, Smith PWF, McDonald  JW.  Marginal  regression
        analysis  of  a  multivariate  binary response. \emph{Biometrika}
        1995; 82(4):847-854.

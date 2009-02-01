@@ -38,7 +38,7 @@
     stop(paste("Can handle only balanced data frame.", "For unbalanced data frames, fill NA's to obtain equal cluster size", 
                sep = "\n"))
   nrep <- as.numeric(names(nrep))
-  y <- model.extract(m, response)
+  y <- model.extract(m, "response")
   nclass <- length(levels(factor(y)))
   ymat <- matrix(as.numeric(as.factor(y)), ncol = nrep, byrow = TRUE)
   dr.est <- function(ymat, nrep, ord) {

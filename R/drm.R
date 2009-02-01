@@ -98,7 +98,7 @@
     offset <- rep(offset, n)
   if (length(offset)==0)
     offset <- rep(0,n)
-  y <- model.extract(m, response)
+  y <- model.extract(m, "response")
   if (any(is.na(y))) 
     cat(paste("Note: Missing response values; Assuming", 
               if (dropout) 
